@@ -1,0 +1,19 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    volumes:
+      - ./volumes/mongodb:/data/db
+
+  pritunl:
+    image: jippity/pritunl:latest # ou une image officielle maintenue
+    container_name: pritunl
+    depends_on:
+      - mongodb
+    privileged: true
+    network_mode: host
+    volumes:
+      - ./volumes/pritunl:/etc/pritunl
+    environment:
+      - MONGODB_URI=mongodb://localhost:27017/pritunl
